@@ -1,3 +1,13 @@
+/* hw pin defs */
+#define SPI_DDR DDRB
+#define SPI_PORT PORTB
+#define SPI_PIN_PINB
+
+#define SPI_MISO_PIN 3
+#define SPI_MOSI_PIN 2
+#define SPI_SCLK_PIN 1 /* SCK on the nRF */
+#define SPI_SS_PIN 0 /* CSN on the nRF */
+
 /* spi commands */
 #define R_REGISTER 0x00 /* to be orred with register address */
 #define W_REGISTER 0x20 /* same as above */
@@ -40,68 +50,75 @@
 
 /* register bits */
 /* CONFIG */
-#define MASK_RX_DR 1<<6
-#define MASK_TX_DS 1<<5
-#define MASK_MAX_RT 1<<4
-#define EN_CRC 1<<3
-#define CRCO 1<<2
-#define PWR_UP 1<<1
-#define PRIM_RX 1<<0
+#define MASK_RX_DR 6
+#define MASK_TX_DS 5
+#define MASK_MAX_RT 4
+#define EN_CRC 3
+#define CRCO 2
+#define PWR_UP 1
+#define PRIM_RX 0
 /* EN_AA */
-#define ENAA_P5 1<<5
-#define ENAA_P4 1<<4
-#define ENAA_P3 1<<3
-#define ENAA_P2 1<<2
-#define ENAA_P1 1<<1
-#define ENAA_P0 1<<0
+#define ENAA_P5 5
+#define ENAA_P4 4
+#define ENAA_P3 3
+#define ENAA_P2 2
+#define ENAA_P1 1
+#define ENAA_P0 0
 /* EN_RXADDR */
-#define ERX_P5 1<<5
-#define ERX_P4 1<<4
-#define ERX_P3 1<<3
-#define ERX_P2 1<<2
-#define ERX_P1 1<<1
-#define ERX_P0 1<<0
+#define ERX_P5 5
+#define ERX_P4 4
+#define ERX_P3 3
+#define ERX_P2 2
+#define ERX_P1 1
+#define ERX_P0 0
 /* SETUP_AW */
-#define AW0 1<<0
-#define AW1 1<<1
+#define AW0 0
+#define AW1 1
 /* SETUP_RETR */
-#define ARD0 1<<4
-#define ARD1 1<<5
-#define ARD2 1<<6
-#define ARD3 1<<7
-#define ARC0 1<<0
-#define ARC1 1<<1
-#define ARC2 1<<2
-#define ARC3 1<<3
+#define ARD0 4
+#define ARD1 5
+#define ARD2 6
+#define ARD3 7
+#define ARC0 0
+#define ARC1 1
+#define ARC2 2
+#define ARC3 3
 /* RF_CH */
 #define RF_CH 0xef
 /* RF_SETUP */
-#define PLL_LOCK 1<<4
-#define RF_DR 1<<3
-#define RF_PWR0 1<<1
-#define RF_PWR1 1<<2
-#define LNA_HCURR 1<<0
+#define PLL_LOCK 4
+#define RF_DR 3
+#define RF_PWR0 1
+#define RF_PWR1 2
+#define LNA_HCURR 0
 /* STATUS */
-#define RX_DR 1<<6
-#define TX_DS 1<<5
-#define MAX_RT 1<<4
-#define RX_P_NO0 1<<1
-#define RX_P_NO1 1<<2
-#define RX_P_NO2 1<<3
-#define TX_FULL 1<<0
+#define RX_DR 6
+#define TX_DS 5
+#define MAX_RT 4
+#define RX_P_NO0 1
+#define RX_P_NO1 2
+#define RX_P_NO2 3
+#define TX_FULL 0
 /* OBSERVE_TX */
 #define PLOS_CNT 0xf0
 #define ARC_CNT 0x0f
 /* CD */
-#define CD 1<<0
+#define CD 0
 /* RX_ADDR_P0:5 */
 /* TX_ADDR */
 /* RX_PW_P0:5 */
 /* FIFO_STATUS */
-#define FIFO_TX_REUSE 1<<6
-#define FIFO_TX_FULL 1<<5
-#define FIFO_TX_EMPTY 1<<4
-#define FIFO_RX_FULL 1<<1
-#define FIFO_RX_EMPTY 1<<0
+#define FIFO_TX_REUSE 6
+#define FIFO_TX_FULL 5
+#define FIFO_TX_EMPTY 4
+#define FIFO_RX_FULL 1
+#define FIFO_RX_EMPTY 0
 
+void nrf_init();
+void nrf_set_reg(uint8_t reg, uint8_t *data, uint8_t len);
 
+/* The datasheet has the max lenghts, use a large enough preallocated buffer 
+ * for the return value. The actual lenght is placed to the location len 
+ * points to.
+ */
+uint8_t *nrf_get_reg(uint8_t reg, uint8_t *len);
