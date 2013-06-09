@@ -1,12 +1,7 @@
-/* hw pin defs */
-#define SPI_DDR DDRB
-#define SPI_PORT PORTB
-#define SPI_PIN_PINB
+#ifndef NRF_H
+#define NRF_H
 
-#define SPI_MISO_PIN 3
-#define SPI_MOSI_PIN 2
-#define SPI_SCLK_PIN 1 /* SCK on the nRF */
-#define SPI_SS_PIN 0 /* CSN on the nRF */
+#include <stdint.h>
 
 /* spi commands */
 #define R_REGISTER 0x00 /* to be orred with register address */
@@ -122,3 +117,4 @@ void nrf_set_reg(uint8_t reg, uint8_t *data, uint8_t len);
  * points to.
  */
 uint8_t *nrf_get_reg(uint8_t reg, uint8_t *len);
+#endif
