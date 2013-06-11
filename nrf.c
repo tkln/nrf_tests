@@ -5,6 +5,7 @@
 void nrf_init()
 {
     /* init pin modes and spi */
+    /* init spi */
     /* init the nrf */
 }
 
