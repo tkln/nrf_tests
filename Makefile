@@ -15,5 +15,8 @@ $(PROJECT).out: $(SOURCES)
 $(PROJECT).hex: $(PROJECT).out
 	$(OBJCOPY) -j .text -j .data -O ihex $(PROJECT).out $(PROJECT).hex
 
+clean: 
+	rm *.out
+
 program: $(PROJECT).hex
 	$(PROGRAMMER) 

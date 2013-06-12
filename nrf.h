@@ -2,10 +2,11 @@
 #define NRF_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 /* spi commands */
-#define R_REGISTER 0x00 /* to be orred with register address */
-#define W_REGISTER 0x20 /* same as above */
+#define R_REGISTER 0x1f /* to be andded with register address */
+#define W_REGISTER 0x2f /* same as above */
 #define R_RX_PAYLOAD 0x61 
 #define W_TX_PAYLOAD 0xa0
 #define FLUSH_TX 0xe1
@@ -110,11 +111,11 @@
 #define FIFO_RX_EMPTY 0
 
 void nrf_init();
-void nrf_set_reg(uint8_t reg, uint8_t *data, uint8_t len);
+uint8_t nrf_set_reg(uint8_t reg, uint8_t *data, size_t len);
 
 /* The datasheet has the max lenghts, use a large enough preallocated buffer 
  * for the return value. The actual lenght is placed to the location len 
  * points to.
  */
-uint8_t *nrf_get_reg(uint8_t reg, uint8_t *len);
+uint8_t nrf_get_reg(uint8_t reg, uint8_t *data, size_t len);
 #endif
