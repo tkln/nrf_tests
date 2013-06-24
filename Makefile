@@ -1,15 +1,17 @@
-SOURCES=nrf.c spi.c
+SOURCES=nrf.c spi.c main.c
 PROJECT=nrf
 MCU=at90usb1286
 F_CPU=16000000
 
 CC=avr-gcc
-CFLAGS=-Wall -mmcu=$(MCU)
+CFLAGS=-Wall -mmcu=$(MCU) -Os -Wextra -Wstrict-prototypes
 OBJCOPY=avr-objcopy
 
-PROGRAMMER=
+AVRDUDE=avrdude
+AVRDUDE_PROGRAMMER=avrispmkII
+AVRDUDE_PORT=usb
 
-$(PROJECT).out: $(SOURCES)
+$(PROJECT).out: $(SOURCES) Makefile
 	$(CC) $(CFLAGS) $(SOURCES) -o $(PROJECT).out
 
 $(PROJECT).hex: $(PROJECT).out
@@ -19,4 +21,4 @@ clean:
 	rm *.out
 
 program: $(PROJECT).hex
-	$(PROGRAMMER) 
+	$(AVRDUDE) -p $(MCU) -c $(AVRDUDE_PROGRAMMER) -P $(AVRDUDE_PORT) -U flash:w:$(PROJECT).hex
