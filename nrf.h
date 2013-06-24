@@ -110,7 +110,7 @@
 #define FIFO_RX_FULL 1
 #define FIFO_RX_EMPTY 0
 
-void nrf_init();
+void nrf_init(void);
 uint8_t nrf_set_reg(uint8_t reg, uint8_t *data, size_t len);
 
 /* The datasheet has the max lenghts, use a large enough preallocated buffer 

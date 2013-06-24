@@ -12,7 +12,7 @@ volatile bool transmitting;
  * the buffer is empty, if transmitting the buffer is full.
  */
 
-void spi_master_init()
+void spi_master_init(void)
 {
     /* set mosi, sclk and ss pins as outputs */
     SPI_DDR = (1<<SPI_MOSI)|(1<<SPI_SCLK)|(1<<SPI_SS);
@@ -44,7 +44,7 @@ uint8_t spi_master_receive(void)
 
 /* to be finished */
 
-void spi_master_fifo_start_transmit()
+void spi_master_fifo_start_transmit(void)
 {
     /* transmit the first byte and increment the counter to the next byte */
     if (spi_tx_fifo_data_start != spi_tx_fifo_data_end) {
@@ -56,7 +56,7 @@ void spi_master_fifo_start_transmit()
     }
 }
 
-void spi_fifo_mastre_transmit_flush()
+void spi_fifo_mastre_transmit_flush(void)
 {
     /* checks if transmitting already */
     if (!transmitting) {
@@ -70,7 +70,7 @@ void spi_fifo_mastre_transmit_flush()
 int spi_master_transmit_fifo_put(uint8_t data)
 {
     /* increment fifo end. wrap to begining if reached end */
-    size_t new_element_id;    /* wait until there is space in the fifo */
+    /*size_t new_element_id;*/    /* wait until there is space in the fifo */
     while (spi_tx_fifo_data_start == spi_tx_fifo_data_end && transmitting) {
     }
     spi_tx_fifo[spi_tx_fifo_data_end] = data;

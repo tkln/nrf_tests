@@ -43,6 +43,7 @@ uint8_t nrf_command_w(uint8_t command, uint8_t *data, size_t len)
     SPI_PORT |= (1<<SPI_SS);
     return status;
 }
+
 uint8_t nrf_set_reg(uint8_t reg, uint8_t *data, size_t len)
 {
     /* register is address is 5 bits */

@@ -21,10 +21,10 @@
 #endif
 
 /* Initaliazes the SPI hardware. */
-void spi_master_init();
+void spi_master_init(void);
 void spi_master_transmit(uint8_t data);
-uint8_t spi_master_fetch();
-uint8_t spi_master_receive();
+uint8_t spi_master_fetch(void);
+uint8_t spi_master_receive(void);
 
 /* Puts the byte into transmit FIFO.
  * Starts the transmit process, if not already running.
@@ -33,10 +33,10 @@ uint8_t spi_master_receive();
 int spi_master_transmit_fifo_put(uint8_t data);
 
 /* Starts the transmit process, if not already runnung. */
-void spi_master_transmit_fifo_flush();
+void spi_master_transmit_fifo_flush(void);
 
 /* Starts the transmit process, if not already rurnning.
  * Blocks until the FIFO is empty. */
-void spi_master_transmit_fifo_wait();
+void spi_master_transmit_fifo_wait(void);
 
 #endif
