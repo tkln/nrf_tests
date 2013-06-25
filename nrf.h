@@ -111,11 +111,15 @@
 #define FIFO_RX_EMPTY 0
 
 void nrf_init(void);
-uint8_t nrf_set_reg(uint8_t reg, uint8_t *data, size_t len);
+uint8_t nrf_set_reg_buf(uint8_t reg, uint8_t *data, size_t len);
 
 /* The datasheet has the max lenghts, use a large enough preallocated buffer 
  * for the return value. The actual lenght is placed to the location len 
  * points to.
  */
-uint8_t nrf_get_reg(uint8_t reg, uint8_t *data, size_t len);
+uint8_t nrf_get_reg_buf(uint8_t reg, uint8_t *data, size_t len);
+uint8_t nrf_set_reg(uint8_t reg, uint8_t data);
+uint8_t nrf_get_reg(uint8_t reg, uint8_t *data);
+uint8_t nrf_tx(void);
+uint8_t nrf_fifo_put(uint8_t data);
 #endif
