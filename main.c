@@ -1,4 +1,3 @@
-#define F_CPU 16000000UL
 #include <avr/io.h>
 #include <util/delay.h>
 #include "nrf.h"
@@ -12,7 +11,7 @@ int main(void)
     LED_INIT();
     nrf_init();
     nrf_get_reg(REG_CONFIG, &reg_val);
-    if (reg_val == (1<<PWR_UP)|(1<<EN_CRC)) {
+    if (reg_val == ((1<<PWR_UP)|(1<<EN_CRC))) {
         LED_ON();
     }
     else{
