@@ -21,4 +21,4 @@ clean:
 	rm *.out
 
 program: $(PROJECT).hex
-	$(AVRDUDE) -p $(MCU) -c $(AVRDUDE_PROGRAMMER) -P $(AVRDUDE_PORT) -U flash:w:$(PROJECT).hex
+	$(AVRDUDE) -p $(MCU) -c $(AVRDUDE_PROGRAMMER) -P $(AVRDUDE_PORT) -U flash:w:$(PROJECT).hex:i
