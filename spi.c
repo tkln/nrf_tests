@@ -78,3 +78,13 @@ int spi_master_transmit_fifo_put(uint8_t data)
     spi_master_fifo_start_transmit();
     return 0;
 }
+
+void spi_data_order_lsb(void)
+{
+    SPCR |= (1<<DORD);
+}
+
+void spi_data_order_msb(void)
+{
+    SPCR &= ~(1<<DORD);
+}

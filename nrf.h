@@ -110,6 +110,10 @@
 #define FIFO_RX_FULL 1
 #define FIFO_RX_EMPTY 0
 
+#define NRF_CE_PORT PORTB 
+#define NRF_CE_DDR DDRB
+#define NRF_CE 4
+
 void nrf_init(void);
 uint8_t nrf_set_reg_buf(uint8_t reg, uint8_t *data, size_t len);
 
@@ -120,6 +124,15 @@ uint8_t nrf_set_reg_buf(uint8_t reg, uint8_t *data, size_t len);
 uint8_t nrf_get_reg_buf(uint8_t reg, uint8_t *data, size_t len);
 uint8_t nrf_set_reg(uint8_t reg, uint8_t data);
 uint8_t nrf_get_reg(uint8_t reg, uint8_t *data);
+/* enable tx mode and empty the fifo */
 uint8_t nrf_tx(void);
-uint8_t nrf_fifo_put(uint8_t data);
+/* write data to tx payload fifo */
+uint8_t nrf_fifo_put(uint8_t *data, size_t len);
+uint8_t nrf_command_r(uint8_t command, uint8_t *data, size_t len);
+uint8_t nrf_command_w(uint8_t command, uint8_t *data, size_t len);
+void nrf_tx_mode(void);
+void nrf_rx_mode(void);
+void nrf_fifo_single_tx(void);
+uint8_t  nrf_set_reg_bitmask(uint8_t reg, uint8_t mask);
+uint8_t  nrf_unset_reg_bitmask(uint8_t reg, uint8_t mask);
 #endif

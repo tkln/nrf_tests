@@ -39,4 +39,6 @@ void spi_master_transmit_fifo_flush(void);
  * Blocks until the FIFO is empty. */
 void spi_master_transmit_fifo_wait(void);
 
+void spi_data_order_lsb(void);
+void spi_data_order_msb(void);
 #endif
