@@ -69,13 +69,19 @@ void pwr_up_test(void)
 
 void print_regs (void)
 {
-    uint8_t config, status, fifo_status, obs;
+    uint8_t config, status, fifo_status, obs, cd;
     nrf_get_reg(REG_CONFIG, &config);
     nrf_get_reg(REG_STATUS, &status);
     nrf_get_reg(REG_FIFO_STATUS, &fifo_status);
     nrf_get_reg(REG_OBSERVE_TX, &obs);
-    printf("config reg: %02x\nstatus reg: %02x\nfifo status reg: %02x\ntx obs reg: %02x\n", config,
-            status, fifo_status, obs);
+    nrf_get_reg(REG_CD, &cd);
+
+    printf("config reg: %02x\n\
+            status reg: %02x\n\
+            fifo status reg: %02x\n\
+            tx obs reg: %02x\n\
+            carrier detec: %02x\n", config,
+            status, fifo_status, obs, cd);
 }
 
 static int putchar_wrapper(char c, FILE *stream)
@@ -91,7 +97,7 @@ static FILE  mystdout = FDEV_SETUP_STREAM(putchar_wrapper, NULL, _FDEV_SETUP_WRI
 
 void fifo_put(uint8_t data)
 {
-    nrf_command_w(W_TX_PAYLOAD, &data, 1);
+    nrf_command_w(W_TX_PAYLOAD_NOACK, &data, 1);
 }
 
 int main(void)
