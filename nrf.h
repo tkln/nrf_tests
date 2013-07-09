@@ -133,6 +133,6 @@ uint8_t nrf_command_w(uint8_t command, uint8_t *data, size_t len);
 void nrf_tx_mode(void);
 void nrf_rx_mode(void);
 void nrf_fifo_single_tx(void);
-uint8_t  nrf_set_reg_bitmask(uint8_t reg, uint8_t mask);
-uint8_t  nrf_unset_reg_bitmask(uint8_t reg, uint8_t mask);
+uint8_t nrf_set_reg_bitmask(uint8_t reg, uint8_t mask);
+uint8_t nrf_unset_reg_bitmask(uint8_t reg, uint8_t mask);
 #endif

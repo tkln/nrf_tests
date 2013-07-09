@@ -50,28 +50,10 @@ void serial_nrf_bridge(void)
     }
 }
 
-static int putchar_wrapper(char c, FILE *stream)
+void pwr_up_test(void)
 {
-    if (c == '\n') {
-        putchar_wrapper('\r', stream);
-    }
-    usb_serial_putchar(c);
-    return 0;
-}
+    uint8_t reg_val;
 
-static FILE  mystdout = FDEV_SETUP_STREAM(putchar_wrapper, NULL, _FDEV_SETUP_WRITE);
-
-int main(void)
-{
-    uint8_t reg_val = 0;
-    uint8_t i;
-    int n;
-    uint8_t payload;
-    CPU_PRESCALE(0); /* 16MHz */
-    LED_INIT();
-    usb_init();
-    nrf_init();
-    stdout = &mystdout;
     nrf_get_reg(REG_CONFIG, &reg_val);
     
     if (reg_val == (1<<PWR_UP)) {
@@ -83,6 +65,76 @@ int main(void)
     
     _delay_ms(200);
     LED_OFF();
-      
+} 
+
+void print_regs (void)
+{
+    uint8_t config, status, fifo_status, obs;
+    nrf_get_reg(REG_CONFIG, &config);
+    nrf_get_reg(REG_STATUS, &status);
+    nrf_get_reg(REG_FIFO_STATUS, &fifo_status);
+    nrf_get_reg(REG_OBSERVE_TX, &obs);
+    printf("config reg: %02x\nstatus reg: %02x\nfifo status reg: %02x\ntx obs reg: %02x\n", config,
+            status, fifo_status, obs);
+}
+
+static int putchar_wrapper(char c, FILE *stream)
+{
+    if (c == '\n') {
+        putchar_wrapper('\r', stream);
+    }
+    usb_serial_putchar(c);
+    return 0;
+}
+
+static FILE  mystdout = FDEV_SETUP_STREAM(putchar_wrapper, NULL, _FDEV_SETUP_WRITE);
+
+void fifo_put(uint8_t data)
+{
+    nrf_command_w(W_TX_PAYLOAD, &data, 1);
+}
+
+int main(void)
+{
+    int c;
+
+    CPU_PRESCALE(0); /* 16MHz */
+    LED_INIT();
+    usb_init();
+    nrf_init();
+    stdout = &mystdout;
+   
+    while(1) {
+        printf(">>");
+        do {
+            c = usb_serial_getchar();
+        } 
+        while(!(c >= 0));
+        printf("%c\n", c);
+        switch (c) {
+            case 's':
+                print_regs();
+                break;
+            case 'f':
+                nrf_command_w(FLUSH_TX, NULL, 0);
+                break;
+            case 't':
+                nrf_tx_mode();
+                break;
+            case 'r':
+                nrf_rx_mode();
+                break;
+            case 'p':
+                fifo_put(c);            
+                break;
+            case 'a':
+                nrf_fifo_single_tx();
+                break;
+            default:
+                printf("pardon?\n");
+                break;
+        }
+
+    }
     return 0;
 }
