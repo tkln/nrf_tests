@@ -15,6 +15,8 @@
 #define ACTIVATE 0x50
 #define R_RX_PL_WID 0x60
 #define W_ACK_PAYLOAD 0xa8
+#define W_TX_PAYLOAD_NOACK 0xb0
+#define NOP 0xff
 
 /* internal registers */
 #define REG_CONFIG 0x00
