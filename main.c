@@ -33,16 +33,18 @@ void serial_nrf_bridge(void)
         nrf_get_reg(REG_FIFO_STATUS, &reg_val);
         if (!(reg_val |= (1<<FIFO_RX_EMPTY))) {
             LED_ON();
-            nrf_command_r(R_RX_PAYLOAD, &payload, 1);
+            nrf_fifo_r_rx(&payload);
             usb_serial_putchar(payload);
         }
         /* if usg getchar >= 0 put the char to nrf tx fifo */
         n = usb_serial_getchar();
         if (n >= 0) {
             LED_ON();
-            nrf_command_w(W_TX_PAYLOAD, (uint8_t *)&n, 1);
+            nrf_fifo_w_tx((uint8_t)n);
         }
-        nrf_fifo_single_tx();  
+        nrf_tx_mode();
+        _delay_us(20);
+        nrf_standby_mode();
         _delay_ms(10);
         LED_OFF();
         nrf_get_reg(REG_FIFO_STATUS, &reg_val);
@@ -95,11 +97,6 @@ static int putchar_wrapper(char c, FILE *stream)
 
 static FILE  mystdout = FDEV_SETUP_STREAM(putchar_wrapper, NULL, _FDEV_SETUP_WRITE);
 
-void fifo_put(uint8_t data)
-{
-    nrf_command_w(W_TX_PAYLOAD_NOACK, &data, 1);
-}
-
 void interactive_test(void)
 {
     int c;
@@ -115,7 +112,8 @@ void interactive_test(void)
                 print_regs();
                 break;
             case 'f':
-                nrf_command_w(FLUSH_TX, NULL, 0);
+                nrf_fifo_flush_tx();
+                nrf_fifo_flush_rx();
                 break;
             case 't':
                 nrf_tx_mode();
@@ -124,10 +122,7 @@ void interactive_test(void)
                 nrf_rx_mode();
                 break;
             case 'p':
-                fifo_put(c);            
-                break;
-            case 'a':
-                nrf_fifo_single_tx();
+                nrf_fifo_w_tx('a');
                 break;
             default:
                 printf("pardon?\n");

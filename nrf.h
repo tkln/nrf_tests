@@ -118,15 +118,12 @@
 #define NRF_CE_HI() NRF_CE_PORT |= (1<<NRF_CE)
 #define NRF_CE_LO() NRF_CE_PORT &= ~(1<<NRF_CE)
 
-void nrf_init(void);
+uint8_t nrf_init(void);
 
 /* mode setting */
-void nrf_tx_mode(void);
-void nrf_rx_mode(void);
-
-/* nrf commands over spi */
-uint8_t nrf_command_r(uint8_t command, uint8_t *data, size_t len);
-uint8_t nrf_command_w(uint8_t command, uint8_t *data, size_t len);
+uint8_t nrf_tx_mode(void);
+uint8_t nrf_rx_mode(void);
+uint8_t nrf_standby_mode(void);
 
 /* register operations */
 /* The datasheet has the max lenghts, use a large enough preallocated buffer 
@@ -143,5 +140,10 @@ uint8_t nrf_unset_reg_bitmask(uint8_t reg, uint8_t mask);
 uint8_t nrf_reg_bitmask(uint8_t reg, uint8_t set_mask, uint8_t unset_mask);
 
 /* fifo operations */
-void nrf_fifo_single_tx(void);
+uint8_t nrf_fifo_r_rx(uint8_t *data);
+uint8_t nrf_fifo_r_rx_buf(uint8_t *data, size_t len);
+uint8_t nrf_fifo_w_tx(uint8_t data);
+uint8_t nrf_fifo_w_tx_buf(uint8_t *data, size_t len);
+uint8_t nrf_fifo_flush_tx(void);
+uint8_t nrf_fifo_flush_rx(void);
 #endif
