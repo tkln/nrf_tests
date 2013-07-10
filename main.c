@@ -77,10 +77,10 @@ void print_regs (void)
     nrf_get_reg(REG_CD, &cd);
 
     printf("config reg: %02x\n\
-            status reg: %02x\n\
-            fifo status reg: %02x\n\
-            tx obs reg: %02x\n\
-            carrier detec: %02x\n", config,
+status reg: %02x\n\
+fifo status reg: %02x\n\
+tx obs reg: %02x\n\
+carrier detec: %02x\n", config,
             status, fifo_status, obs, cd);
 }
 
@@ -100,16 +100,9 @@ void fifo_put(uint8_t data)
     nrf_command_w(W_TX_PAYLOAD_NOACK, &data, 1);
 }
 
-int main(void)
+void interactive_test(void)
 {
     int c;
-
-    CPU_PRESCALE(0); /* 16MHz */
-    LED_INIT();
-    usb_init();
-    nrf_init();
-    stdout = &mystdout;
-   
     while(1) {
         printf(">>");
         do {
@@ -140,7 +133,20 @@ int main(void)
                 printf("pardon?\n");
                 break;
         }
-
     }
+}
+
+int main(void)
+{
+    int c;
+
+    CPU_PRESCALE(0); /* 16MHz */
+    LED_INIT();
+    usb_init();
+    nrf_init();
+    stdout = &mystdout;
+    
+    interactive_test();
+
     return 0;
 }
